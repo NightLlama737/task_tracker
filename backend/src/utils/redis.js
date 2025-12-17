@@ -1,8 +1,11 @@
-const Redis = require('ioredis');
+const { createClient } = require('redis');
 
-const redis = new Redis({
-  host: process.env.REDIS_HOST || 'redis',
-  port: 6379
+const redisClient = createClient({
+  url: 'redis://localhost:6379' // nebo tvůj Docker service name
 });
 
-module.exports = redis;
+redisClient.connect()
+  .then(() => console.log('Redis připojeno'))
+  .catch(err => console.error('Redis error', err));
+
+module.exports = redisClient;
